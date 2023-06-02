@@ -38,10 +38,10 @@ function App() {
 	useEffect(() => {
 		loginWithToken()
 			.then((res) => {
-				if (res && typeof res.data === 'object') {
+				if (res && typeof res === 'object') {
 					setLoggedIn(true);
 					navigate('/', { replace: true });
-					setEmail(res.data.email);
+					setEmail(res.email);
 				}
 			})
 			.catch((e) => console.log(e));
