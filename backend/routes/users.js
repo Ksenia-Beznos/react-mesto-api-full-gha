@@ -9,6 +9,7 @@ const {
   updateUser,
   updateAvatar,
   login,
+  logout,
   getAboutMe,
 } = require('../controllers/users');
 
@@ -21,6 +22,7 @@ const {
 
 router.post('/signup', celebrate(userCreateValidation), createUser);
 router.post('/signin', celebrate(userCreateValidation), login);
+router.get("/signout", logout);
 router.get('/users', auth, getUsers);
 router.get('/users/me', auth, getAboutMe);
 router.get('/users/:id', auth, celebrate(userValidation), getUserById);
