@@ -5,7 +5,6 @@ export function register(email, password) {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
-			Accept: 'application/json',
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ email, password }),
@@ -29,8 +28,19 @@ export const loginWithToken = () => {
 		method: 'GET',
 		credentials: 'include',
 		headers: {
+			Accept: 'application/json',
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('token')}`,
+		},
+	}).then(getResponse);
+};
+
+export const logout = () => {
+	return fetch(`${BASE_URL}/signout`, {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 		},
 	}).then(getResponse);
 };

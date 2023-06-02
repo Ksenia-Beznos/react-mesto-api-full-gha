@@ -14,8 +14,7 @@ import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
-import { loginWithToken } from '../utils/apiAuth';
-import { login, register } from '../utils/apiAuth';
+import { loginWithToken, login, register, logout } from '../utils/apiAuth';
 
 function App() {
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -37,16 +36,15 @@ function App() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (localStorage.getItem('token'))
-			loginWithToken()
-				.then((res) => {
-					if (res && typeof res.data === 'object') {
-						setLoggedIn(true);
-						navigate('/', { replace: true });
-						setEmail(res.data.email);
-					}
-				})
-				.catch((e) => console.log(e));
+		loginWithToken()
+			.then((res) => {
+				if (res && typeof res.data === 'object') {
+					setLoggedIn(true);
+					navigate('/', { replace: true });
+					setEmail(res.data.email);
+				}
+			})
+			.catch((e) => console.log(e));
 	}, []);
 
 	useEffect(() => {
@@ -169,12 +167,11 @@ function App() {
 				console.log(res);
 				if (res !== false) {
 					setLoggedIn(true);
-					localStorage.setItem('token', res.token);
 					setEmail(email);
 					setIsStatus(true);
 					setIsMessage('Заявка на кредит одобрена');
 					navigate('/', { replace: true });
-					console.log(loggedIn)
+					console.log(loggedIn);
 				}
 			})
 			.catch((err) => {
@@ -208,18 +205,20 @@ function App() {
 	};
 
 	function signOut() {
-		localStorage.removeItem('token');
+		logout()
+			.then()
+			.catch((err) => console.log(err));
 		setEmail('');
 	}
 
 	return (
-		<div className='page'>
+		<div className="page">
 			<CurrentUserContext.Provider value={currentUser}>
 				<Header email={email} signOut={signOut} />
 
 				<Routes>
 					<Route
-						path='/'
+						path="/"
 						element={
 							<ProtectedRoute
 								element={Main}
@@ -235,22 +234,22 @@ function App() {
 						}
 					/>
 					<Route
-						path='/sign-up'
+						path="/sign-up"
 						element={
 							<Register
-								title='Регистрация'
-								btnName='Зарегистрироваться'
+								title="Регистрация"
+								btnName="Зарегистрироваться"
 								openTooltip={setIsInfoTooltipOpen}
 								handleSubmit={handleSubmitRegister}
 							/>
 						}
 					/>
 					<Route
-						path='/sign-in'
+						path="/sign-in"
 						element={
 							<Login
-								title='Вход'
-								btnName='Войти'
+								title="Вход"
+								btnName="Войти"
 								setLoggedIn={setLoggedIn}
 								setUserEmail={setEmail}
 								handleSubmit={handleLoginSubmit}
@@ -258,8 +257,8 @@ function App() {
 						}
 					/>
 					<Route
-						path='*'
-						element={loggedIn ? <Navigate to='/' replace /> : <Navigate to='/sign-in' replace />}
+						path="*"
+						element={loggedIn ? <Navigate to="/" replace /> : <Navigate to="/sign-in" replace />}
 					/>
 				</Routes>
 
