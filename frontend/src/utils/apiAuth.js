@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://api.mesto-yandex.nomoredomains.rocks';
+export const BASE_URL = 'https://api.mesto-yandex.nomoredomains.rocks';
 
 export function register(email, password) {
 	return fetch(`${BASE_URL}/signup`, {

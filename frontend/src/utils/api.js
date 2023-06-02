@@ -118,7 +118,7 @@ class Api {
 }
 
 export const api = new Api({
-	baseUrl: 'http://api.mesto-yandex.nomoredomains.rocks',
+	baseUrl: 'https://api.mesto-yandex.nomoredomains.rocks',
 	headers: {
 		'Content-Type': 'application/json',
 	},
