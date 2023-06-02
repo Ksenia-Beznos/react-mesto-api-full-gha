@@ -9,8 +9,8 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP 51.250.12.246
 
-Frontend https://...
+Frontend https://mesto-yandex.nomoredomains.rocks
 
-Backend https://...
+Backend https://api.mesto-yandex.nomoredomains.rocks
