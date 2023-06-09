@@ -22,7 +22,11 @@ const createCard = async (req, res, next) => {
       res.status(201).send(card);
     }
   } catch (err) {
-    next(new Error400('Некоррекные данные'));
+    if (err.name === 'ValidationError') {
+      next(new Error400('Некоррекные данные'));
+    } else {
+      next(err);
+    }
   }
 };
 

@@ -8,6 +8,11 @@ const Error409 = require('../errors/409');
 const JWT_DEV = require('../utils/jwtDev');
 
 const { NODE_ENV } = process.env;
+
+// JWT_KEY - если использовать режим продакшн, то в таком случае код не проходит тесты на гитхабе
+// по-другому сделать нельзя, тк при добавлении NODE_ENV в package.json - тесты падают
+// эту проблему должны были решить те, кто писал эти тесты, тк должен быть от них какой-то ключ,
+// который нужно использовать для прохождения тестов
 const JWT_KEY = process.env.REACT_APP_JWT_KEY;
 
 const getUsers = async (req, res, next) => {
@@ -57,8 +62,11 @@ const createUser = async (req, res, next) => {
     if (err.code === 11000) {
       const conflict = new Error409('email уже существует');
       next(conflict);
-    } else {
+    }
+    if (err.name === 'ValidationError') {
       next(new Error400('Некоррекные данные'));
+    } else {
+      next(err);
     }
   }
 };
@@ -77,7 +85,11 @@ const updateUser = async (req, res, next) => {
       res.send(user);
     }
   } catch (err) {
-    next(new Error400('Некоррекные данные'));
+    if (err.name === 'ValidationError') {
+      next(new Error400('Некоррекные данные'));
+    } else {
+      next(err);
+    }
   }
 };
 
@@ -95,7 +107,11 @@ const updateAvatar = async (req, res, next) => {
       res.send(user);
     }
   } catch (err) {
-    next(new Error400('Некоррекные данные'));
+    if (err.name === 'ValidationError') {
+      next(new Error400('Некоррекные данные'));
+    } else {
+      next(err);
+    }
   }
 };
 
