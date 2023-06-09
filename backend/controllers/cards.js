@@ -1,6 +1,7 @@
 const Card = require('../models/card');
 const Error404 = require('../errors/404');
 const Error403 = require('../errors/403');
+const Error400 = require('../errors/400');
 
 const getCards = async (req, res, next) => {
   try {
@@ -21,7 +22,7 @@ const createCard = async (req, res, next) => {
       res.status(201).send(card);
     }
   } catch (err) {
-    next(err);
+    next(new Error400('Некоррекные данные'));
   }
 };
 

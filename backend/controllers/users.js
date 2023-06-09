@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Error400 = require('../errors/400');
 const Error401 = require('../errors/401');
 const Error404 = require('../errors/404');
 const Error409 = require('../errors/409');
@@ -57,7 +58,7 @@ const createUser = async (req, res, next) => {
       const conflict = new Error409('email уже существует');
       next(conflict);
     } else {
-      next(err);
+      next(new Error400('Некоррекные данные'));
     }
   }
 };
@@ -76,7 +77,7 @@ const updateUser = async (req, res, next) => {
       res.send(user);
     }
   } catch (err) {
-    next(err);
+    next(new Error400('Некоррекные данные'));
   }
 };
 
@@ -94,7 +95,7 @@ const updateAvatar = async (req, res, next) => {
       res.send(user);
     }
   } catch (err) {
-    next(err);
+    next(new Error400('Некоррекные данные'));
   }
 };
 
