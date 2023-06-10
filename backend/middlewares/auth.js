@@ -11,7 +11,10 @@ const middlewareAuth = (req, res, next) => {
     if (!token) {
       throw new Error401("Токен отстутствует");
     }
-    req.user = jwt.verify(token, NODE_ENV_PROD === "production" ? JWT_KEY : JWT_DEV);
+    req.user = jwt.verify(
+      token,
+      NODE_ENV_PROD === "production" ? JWT_KEY : JWT_DEV
+    );
     next();
   } catch {
     const badToken = new Error401("Токен недействителен");
