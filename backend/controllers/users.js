@@ -7,16 +7,7 @@ const Error404 = require('../errors/404');
 const Error409 = require('../errors/409');
 const JWT_DEV = require('../utils/jwtDev');
 
-const { NODE_ENV } = process.env;
-
-// JWT_KEY - если использовать режим продакшн, то в таком случае код не проходит тесты на гитхабе
-// по-другому сделать нельзя, тк при добавлении в package.json
-// <<"start": "NODE_ENV=production node app.js">> - тесты падают.
-// эту проблему должны были решить те, кто писал эти тесты, тк должен быть от них какой-то ключ,
-// который нужно использовать для прохождения тестов
-// а файл .env у меня в gitignore (который не видно на гитхабе), тк этого требуют в брифе.
-// разберитесь в команде что и как нужно делать,
-// чтобы не было каждый раз со всех сторон разной информации и требований
+const NODE_ENV_PROD = process.env.REACT_APP_NODE_ENV;
 
 const JWT_KEY = process.env.REACT_APP_JWT_KEY;
 
@@ -130,8 +121,8 @@ const login = async (req, res, next) => {
 
     const token = jwt.sign(
       { _id: user._id },
-      NODE_ENV === 'production' ? JWT_KEY : JWT_DEV,
-      { expiresIn: '7d' },
+      NODE_ENV_PROD === "production" ? JWT_KEY : JWT_DEV,
+      { expiresIn: "7d" }
     );
 
     res.cookie('jwt', token, {
